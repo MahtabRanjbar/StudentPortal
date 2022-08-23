@@ -1,0 +1,62 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %} 
+{% block content %}
+
+<section class='text-center container'>
+    <h2>Search books and browse your favorite</h2>
+    <p>just enter the search query to obtain the results</p><b></b>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn btn-danger" type="submit" value="Submit">
+    </form><br>
+    {% for res in results  %}
+    <a href="{{res.preview}}" target="_blank">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img class="img-fluid" src="{{res.thumbnail}}" alt="">
+
+                    </div>
+                    <div class="col-md-9">
+                        <h3 class="p-0 m-0">{{res.title}}</h3>
+                        <b> 
+                        {% if res.subtitle %}
+                            <u>
+                                
+                                <h5 class="p-0 m-0">{{res.subtitle}}</h5>   
+                            </u>
+                        {% else %}
+                            <br>
+                        {% endif %}        
+                        </b>
+                        {% if res.description %}
+                            <h6 class="p-0 m-1">{{res.description}}</h6>
+                        {% endif %}
+                        {% if res.categories %}
+                        <b> 
+                            <h6 class="ml-0 mt-3">Category:
+                                {% for category in res.categories  %}
+                                {{category}}
+                                {% endfor %}
+                            </h6>
+                            {% if res.count %}
+                                <h6 class="ml-0 mt-1">Pages: {{res.count}}</h6>
+                            {% endif %}
+                            {% if res.rating %}
+                                <h6 class="ml-0 mt-1">Rating: {{res.rating}}</h6> 
+                            {% endif %}
+                       
+                        {% endif %}
+                        </b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+    <br>
+</section>
+
+{% endblock content %}
